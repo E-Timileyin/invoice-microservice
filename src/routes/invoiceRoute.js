@@ -1,8 +1,4 @@
-const invoiceRoute = (app) => {
-    // get all invoice
-    app.get('/', (req, res) => {
-        res.send('Invoice microservice');
-    }); 
+const invoiceRoute = (app) => { 
     // get all invoice
     app.get('/api/invoice', (req, res) => {
         console.log(req.query)
