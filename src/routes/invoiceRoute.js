@@ -1,25 +1,58 @@
-const invoiceRoute = (app) => { 
-    // get all invoice
-    app.get('/api/invoice', (req, res) => {
-        console.log(req.query)
-        res.send('Invoice microservice');
-    });
-    //get inovice by id
-    app.get('/api/invoice/:id', (request,response) =>{
-        console.log(request.params);
-        const parsedId = parseInt(request.params.id);
-        console.log(parsedId);
-        if(isNaN(parsedId)){
-            response.status(404).send({msg: 'bad request'})
-        }
-        //find invoice
-        const findInvoice = mockUsers.find(user => user.id === parsedId);
-        if(!findInvoice){
-            response.status(404).send({msg: 'invoice not found'})
-        }
-        response.send(findInvoice);
-    });
-    
-}
+import express from 'express';
+import { createInvoice, deleteInvoice, getAllInvoices, getInvoiceById, updateInvoice } from '../services/invoiceService.js';
 
-export default invoiceRoute
+const router = express.Router();
+
+// create invoice
+router.post('/invoices', async (req, res) => {
+    try {
+        const invoice = await createInvoice(req.body);
+        res.status(201).json(invoice);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+
+// get all invoices
+router.get('/invoices', async (req, res) => {
+    try {
+        const invoices = await getAllInvoices();
+        res.status(200).json(invoices);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+// get invoice by id
+router.get('/invoices/:id', async (req, res) => {
+    try {
+        const invoice = await getInvoiceById(req.params.id);
+        res.status(200).json(invoice);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+
+// update invoice
+router.put('/invoices/:id', async (req, res) => {
+    try {
+        const invoice = await updateInvoice(req.params.id, req.body);
+        res.status(200).json(invoice);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+// delete invoice
+router.delete('/invoices/:id', async (req, res) => {
+    try {
+        const invoice = await deleteInvoice(req.params.id);
+        res.status(200).json(invoice);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
+export default router;
