@@ -13,7 +13,6 @@ router.post('/invoices', async (req, res) => {
     }
 })
 
-
 // get all invoices
 router.get('/invoices', async (req, res) => {
     try {

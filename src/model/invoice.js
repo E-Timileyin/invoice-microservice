@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 const schema = mongoose.Schema({
     id: String,
@@ -19,10 +19,22 @@ const schema = mongoose.Schema({
     currency: String,
     status: String,
     dueDate: Date,
-    paymentDate: Date,
+    paymentDate: {
+
+    },
     notes: String,
-    createdAt: Date,
-    updatedAt: Date
+    // cannot change
+    createdAt: {
+        type: Date,
+        immutable: true,
+        default: () => Date.now,
+    },
+    // cannot change
+    updatedAt: {
+        type: Date,
+        immutable: true,
+        default: () => Date.now,
+    }
 });
 
 const model = mongoose.model("Invoice", schema);
